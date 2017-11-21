@@ -104,7 +104,8 @@ def get_data(detail_main_url, s_date):
     req = get_parse(detail_main_url)
     soup = BeautifulSoup(req.text, 'lxml')
     content = soup.select('div .el')
-    conn = MySQLdb.connect(host="localhost", user="root", passwd="root", db="job", charset="utf8")
+    conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
+                          charset="utf8")
     cursor = conn.cursor()
 
     for i in range(13, len(content)):
@@ -180,9 +181,9 @@ def get_data(detail_main_url, s_date):
             except Exception, e:
                 print str(e)
                 if str(e).find('2006') >= 0:
-                    conn = MySQLdb.connect(host="localhost", user="root", passwd="root",
-                                           db="job",
-                                           charset="utf8")
+                    onn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129",
+                                          db="tanke",
+                                          charset="utf8")
                     cursor = conn.cursor()
                     continue
                 else:

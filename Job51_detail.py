@@ -77,7 +77,8 @@ def get_parse(url):
 
 
 def get_detail_pages():
-    conn = MySQLdb.connect(host="localhost", user="root", passwd="root", db="job", charset="utf8")
+    conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
+                          charset="utf8")
     cursor = conn.cursor()
     old_urls = []
     all_urls = []
@@ -105,7 +106,8 @@ def get_info(url):
     req = get_parse(url)
     content = str(req.text).encode('latin1').decode('gbk')
     print type(content)
-    conn = MySQLdb.connect(host="localhost", user="root", passwd="root", db="job", charset="utf8")
+    conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
+                           charset="utf8")
     cursor = conn.cursor()
     try:
         info = re_findall('class="msg ltype">(.*?)</p>', content)
@@ -158,7 +160,8 @@ def get_info(url):
         if str(e).find('2006') >= 0:
             cursor.close()
             conn.close()
-            conn = MySQLdb.connect(host="localhost", user="root", passwd="root", db="51job", charset="utf8")
+            conn = MySQLdb.connect(host="221.226.72.226", port=13306, user="root", passwd="somao1129", db="tanke",
+                                   charset="utf8")
             cursor = conn.cursor()
             print '数据库连接重启  ' + str(datetime.datetime.now())
 
