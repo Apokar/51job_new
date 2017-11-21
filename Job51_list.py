@@ -173,6 +173,9 @@ def get_data(detail_main_url, s_date):
                         print u'插入成功  ' + str(datetime.datetime.now())
                     else:
                         print job_url + u'  不符合要求 '
+                        cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
+                            job_url, e, 'get_data不符合要求', str(datetime.datetime.now())))
+                        conn.commit()
                 break
             except Exception, e:
                 print str(e)
@@ -201,5 +204,3 @@ def main():
         every_main_urls = get_detail_urls(detail_urls)
         for url in every_main_urls:
             get_data(url, s_date)
-
-
