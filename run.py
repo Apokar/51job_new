@@ -5,6 +5,7 @@
 # @File         : run.py
 # @Software     : PyCharm Community Edition
 # @PROJECT_NAME : 51job_new
+import threading
 
 from Job51_detail import *
 from Job51_list import *
@@ -20,8 +21,24 @@ while True:
 
     print u'处理详情页 _@_ ' + str(datetime.datetime.now())
     need_urls = get_detail_pages()
-    for url in need_urls:
-        get_info(url)
+    # for url in need_urls:
+    #     get_info(url)
+    start_no = 0
+    thread_num=10
+
+    end_no = len(need_urls)
+
+    while start_no < (end_no - thread_num + 1):
+        threads = []
+
+        for inner_index in range(0, thread_num):
+            threads.append(threading.Thread(target=main, args=(need_urls[start_no + inner_index],)))
+        for t in threads:
+            t.setDaemon(True)
+            t.start()
+        t.join()
+        start_no += thread_num
+
 
     timeArray = time.strptime(str(s_date), "%Y%m%d")
     timestamp = time.mktime(timeArray)

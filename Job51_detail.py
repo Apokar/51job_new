@@ -84,20 +84,27 @@ def get_detail_pages():
     old_urls = []
     all_urls = []
     need_urls = []
-    cursor.execute('select job_url from 51job_career_list')
-    all = cursor.fetchall()
-    for x in range(0, len(all)):
-        all_urls.append(all[x][0])
 
-    cursor.execute('select job_url from 51job_career_detail')
-    old = cursor.fetchall()
-    for y in range(0, len(old)):
-        old_urls.append(old[y][0])
+    cursor.execute('select distinct a.job_url from 51job_career_list a left join 51job_career_detail b on a.job_url = b.job_url where b.job_url is null')
+    need = cursor.fetchall()
 
-    for url in all_urls:
-        if url not in old_urls:
-            need_urls.append(url)
+    for y in range(0, len(need)):
+        need_urls.append(need[y][0])
 
+    # cursor.execute('select job_url from 51job_career_list')
+    # all = cursor.fetchall()
+    # for x in range(0, len(all)):
+    #     all_urls.append(all[x][0])
+    #
+    # cursor.execute('select job_url from 51job_career_detail')
+    # old = cursor.fetchall()
+    # for y in range(0, len(old)):
+    #     old_urls.append(old[y][0])
+    #
+    # for url in all_urls:
+    #     if url not in old_urls:
+    #         need_urls.append(url)
+    #
     return need_urls
 
 

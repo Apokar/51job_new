@@ -143,41 +143,41 @@ def get_data(detail_main_url, s_date):
 
                 end_timestamp = start_timestamp + int(345600)
 
-                cursor = conn.cursor()
-                cursor.execute('select job_url from 51job_career_list')
-                old = cursor.fetchall()
-                for y in range(0, len(old)):
-                    old_urls.append(old[y][0])
+                # cursor = conn.cursor()
+                # cursor.execute('select job_url from 51job_career_list')
+                # old = cursor.fetchall()
+                # for y in range(0, len(old)):
+                #     old_urls.append(old[y][0])
 
-                print u'检测数据是否已插入'
-                if job_url in old_urls:
-                    print job_url + u'  已插入,跳过'
-                    pass
-                else:
-                    print job_url + u'  未插入,接下来检测时间是否符合要求'
-                    if start_timestamp <= timestamp < end_timestamp:
-                        print job_url + u'  时间符合要求 '
-                        cursor.execute(
-                            'insert into 51job_career_list values ("%s","%s","%s","%s","%s","%s","%s","%s","%s")' %
-                            (
-                                job_url
-                                , job_name
-                                , company_url
-                                , company_name
-                                , salary
-                                , lcation
-                                , pub_date
-                                , str(datetime.datetime.now())
-                                , str(datetime.datetime.now())[:10]
-                            )
+                # print u'检测数据是否已插入'
+                # if job_url in old_urls:
+                #     print job_url + u'  已插入,跳过'
+                #     pass
+                # else:
+                print job_url + u'  检测时间是否符合要求'
+                if start_timestamp <= timestamp < end_timestamp:
+                    print job_url + u'  时间符合要求 '
+                    cursor.execute(
+                        'insert into 51job_career_list values ("%s","%s","%s","%s","%s","%s","%s","%s","%s")' %
+                        (
+                            job_url
+                            , job_name
+                            , company_url
+                            , company_name
+                            , salary
+                            , lcation
+                            , pub_date
+                            , str(datetime.datetime.now())
+                            , str(datetime.datetime.now())[:10]
                         )
-                        conn.commit()
-                        print u'插入成功  ' + str(datetime.datetime.now())
-                    else:
-                        print job_url + u'  不符合要求 '
-                        cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
-                            job_url, e, 'get_data不符合要求', str(datetime.datetime.now())))
-                        conn.commit()
+                    )
+                    conn.commit()
+                    print u'插入成功  ' + str(datetime.datetime.now())
+                else:
+                    print job_url + u'  不符合要求 '
+                    cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
+                        job_url, e, 'get_data不符合要求', str(datetime.datetime.now())))
+                    conn.commit()
                 break
             except Exception, e:
                 print str(e)
