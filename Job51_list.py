@@ -2,7 +2,7 @@
 # @Time         : 2017/11/20 11:06
 # @Author       : Huaiz
 # @Email        : Apokar@163.com
-# @File         : 51Job_list.py
+# @File         : Job51_list.py
 # @Software     : PyCharm Community Edition
 # @PROJECT_NAME : 51job_new
 
@@ -189,13 +189,13 @@ def get_data(detail_main_url, s_date):
 def main():
     # test_url = 'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,1.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare='
     s_date = input('Start from (input like this : YYYYMMDD):')
-    # main_urls = get_main_urls()
-    main_urls = [
-        'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,1.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=',
-        'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,2.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=',
-        'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,3.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=',
-        'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,4.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=',
-        'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,5.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=']
+    main_urls = get_main_urls()
+    # main_urls = [
+    #     'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,1.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=',
+    #     'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,2.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=',
+    #     'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,3.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=',
+    #     'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,4.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=',
+    #     'http://search.51job.com/list/000000,000000,0000,00,9,01,%2B,2,5.html?lang=c&stype=1&postchannel=0000&workyear=01&cotype=99&degreefrom=01&jobterm=99&companysize=01&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=']
 
     for detail_urls in main_urls:
         every_main_urls = get_detail_urls(detail_urls)
@@ -203,5 +203,3 @@ def main():
             get_data(url, s_date)
 
 
-if __name__ == '__main__':
-    main()
