@@ -145,7 +145,7 @@ def get_data(detail_main_url, s_date):
                         end_timestamp = start_timestamp + int(345600)
 
                         # cursor = conn.cursor()
-                        # cursor.execute('select job_url from 51job_career_list')
+                        # cursor.execute('select job_url from 51job_career_list_copy')
                         # old = cursor.fetchall()
                         # for y in range(0, len(old)):
                         #     old_urls.append(old[y][0])
@@ -160,7 +160,7 @@ def get_data(detail_main_url, s_date):
                             print job_url + u'  时间符合要求 '
 
                             cursor.execute(
-                                'insert into 51job_career_list values ("%s","%s","%s","%s","%s","%s","%s","%s","%s")' %
+                                'insert into 51job_career_list_copy values ("%s","%s","%s","%s","%s","%s","%s","%s","%s")' %
                                 (
                                     job_url
                                     , job_name
