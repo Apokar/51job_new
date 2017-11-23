@@ -9,7 +9,7 @@ import threading
 
 from Job51_detail import *
 from Job51_list import *
-#
+
 s_date = input('Start from (input like this : YYYYMMDD):')
 while True:
     print u'处理列表页 _@_ ' + str(datetime.datetime.now())
@@ -19,10 +19,10 @@ while True:
         for url in every_main_urls:
             get_data(url, s_date)
 
-    print u'处理详情页 _@_ ' + str(datetime.datetime.now())
-    need_urls = get_detail_pages()
-    # for url in need_urls:
-    #     get_info(url)
+print u'处理详情页 _@_ ' + str(datetime.datetime.now())
+need_urls = get_detail_pages()
+for url in need_urls:
+    get_info(url)
     start_no = 0
     thread_num=10
 
@@ -32,7 +32,7 @@ while True:
         threads = []
 
         for inner_index in range(0, thread_num):
-            threads.append(threading.Thread(target=main, args=(need_urls[start_no + inner_index],)))
+            threads.append(threading.Thread(target=get_info, args=(need_urls[start_no + inner_index],)))
         for t in threads:
             t.setDaemon(True)
             t.start()

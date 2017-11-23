@@ -85,7 +85,8 @@ def get_detail_pages():
     all_urls = []
     need_urls = []
 
-    cursor.execute('select distinct a.job_url from 51job_career_list_copy a left join 51job_career_detail b on a.job_url = b.job_url where b.job_url is null')
+    cursor.execute(
+        'select distinct a.job_url from 51job_career_list_copy a left join 51job_career_detail b on a.job_url = b.job_url where b.job_url is null')
     need = cursor.fetchall()
 
     for y in range(0, len(need)):
@@ -113,7 +114,7 @@ def get_info(url):
 
     req = get_parse(url)
     content = str(req.text).encode('latin1').decode('gbk')
-    print type(content)
+    # print type(content)
     conn = MySQLdb.connect(host="139.198.189.129", port=20009, user="root", passwd="somao1129",
                            db="51job",
                            charset="utf8")
@@ -143,6 +144,7 @@ def get_info(url):
         print detag(address)
         print detag(company_des)
         cursor.execute(
+
             'insert into 51job_career_detail values ("%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s")' %
             (
                 url
@@ -187,9 +189,3 @@ def get_info(url):
             cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
                 url, 'unknown', '2nd_page', str(datetime.datetime.now())))
             conn.commit()
-
-
-def main():
-    need_urls = get_detail_pages()
-    for url in need_urls:
-        get_info(url)
