@@ -72,8 +72,14 @@ def get_parse(url):
             req = requests.get(url, timeout=10, headers=headers, verify=False)
             return req
         except Exception, e:
+            conn = MySQLdb.connect(host="139.198.189.129", port=20009, user="root", passwd="somao1129",
+                                   db="51job", charset="utf8")
+            cursor = conn.cursor()
             print 'get_parse error  : ' + str(e)
-            continue
+            cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
+                url, e, '解析失败', str(datetime.datetime.now())))
+            conn.commit()
+            break
 
 
 def get_detail_pages():
@@ -92,20 +98,6 @@ def get_detail_pages():
     for y in range(0, len(need)):
         need_urls.append(need[y][0])
 
-    # cursor.execute('select job_url from 51job_career_list_copy')
-    # all = cursor.fetchall()
-    # for x in range(0, len(all)):
-    #     all_urls.append(all[x][0])
-    #
-    # cursor.execute('select job_url from 51job_career_detail')
-    # old = cursor.fetchall()
-    # for y in range(0, len(old)):
-    #     old_urls.append(old[y][0])
-    #
-    # for url in all_urls:
-    #     if url not in old_urls:
-    #         need_urls.append(url)
-    #
     return need_urls
 
 
@@ -187,5 +179,5 @@ def get_info(url):
             print str(e)
             print url + '出错,跳过  ' + str(datetime.datetime.now())
             cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
-                url, 'unknown', '2nd_page', str(datetime.datetime.now())))
+                url, e, '2nd_page', str(datetime.datetime.now())))
             conn.commit()

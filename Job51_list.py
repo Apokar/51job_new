@@ -176,14 +176,15 @@ def get_data(detail_main_url, s_date):
                             conn.commit()
                             print u'插入成功  ' + str(datetime.datetime.now())
                         else:
+                            cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
+                                job_url, e, '时间不符合要求', str(datetime.datetime.now())))
+                            conn.commit()
                             if start_timestamp > timestamp:
                                 print job_url + u'  时间不符合要求 '
                                 flag=0
                                 break
                             # 上面的flag 就是指 在检测到时间不符的数据时 接下来的数据都是不符的 所以跳出for循环 开始下一个页面
-                            # cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
-                            #     job_url, e, 'get_data不符合要求', str(datetime.datetime.now())))
-                            # conn.commit()
+
                         break
                     except Exception, e:
                         print str(e)
