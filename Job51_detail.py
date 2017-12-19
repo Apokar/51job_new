@@ -83,34 +83,49 @@ def get_parse(url):
 
 
 def get_detail_pages():
-    conn = MySQLdb.connect(host="139.198.189.129", port=20009, user="root", passwd="somao1129",
-                           db="51job",
-                           charset="utf8")
-    cursor = conn.cursor()
-    old_urls = []
-    all_urls = []
-    need_urls = []
+    while True :
+        try:
+            conn = MySQLdb.connect(host="139.198.189.129", port=20009, user="root", passwd="somao1129",
+                                   db="51job",
+                                   charset="utf8")
+            cursor = conn.cursor()
 
-    cursor.execute(
-        'select distinct a.job_url from 51job_career_list_copy a left join 51job_career_detail b on a.job_url = b.job_url where b.job_url is null')
-    need = cursor.fetchall()
+            need_urls = []
 
-    for y in range(0, len(need)):
-        need_urls.append(need[y][0])
+            cursor.execute(
+                'select distinct a.job_url from 51job_career_list_copy a left join 51job_error_log b on a.job_url = b.url where b.url is null')
+            need = cursor.fetchall()
+            for y in range(0, len(need)):
+                need_urls.append(need[y][0])
+            cursor.close()
+            conn.close()
+            return need_urls
+        except Exception,e:
+            print str(e)
+            time.sleep(3)
 
-    return need_urls
+
+
 
 
 def get_info(url):
-    print 'getting 2nd page : ' + url + ' _@_ ' + str(datetime.datetime.now())
-
-    req = get_parse(url)
-    content = str(req.text).encode('latin1').decode('gbk')
-    # print type(content)
     conn = MySQLdb.connect(host="139.198.189.129", port=20009, user="root", passwd="somao1129",
                            db="51job",
                            charset="utf8")
     cursor = conn.cursor()
+    while True:
+        try:
+            print 'getting 2nd page : ' + url + ' _@_ ' + str(datetime.datetime.now())
+            req = get_parse(url)
+            content = str(req.text).encode('latin1').decode('gbk')
+            # print type(content)
+            break
+        except Exception,e:
+            print '0001 :   ' +str(e)
+            break
+
+
+
     try:
         info = re_findall('class="msg ltype">(.*?)</p>', content)
         expr = re_findall('class="i1"></em>(.*?)</span>', content)[0]
@@ -125,7 +140,7 @@ def get_info(url):
         print url
         print isExist(detag(info[0]).split('|')[0])
         print isExist(detag(info[0]).split('|')[1])
-        print isExist(detag(info[0]).split('|')[2])
+        print isExist(detag(info[0]).split('|')[2] )
         print detag(expr)
         print detag(edu)
         print hire_number
@@ -158,6 +173,10 @@ def get_info(url):
         )
         conn.commit()
         print u'详情页 插入成功 @' + str(datetime.datetime.now())
+        cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
+            url, '插入成功', '51job', str(datetime.datetime.now())))
+        conn.commit()
+        print u'日志表 插入成功 @' + str(datetime.datetime.now())
 
     except Exception, e:
         if str(e).find('2006') >= 0:

@@ -19,10 +19,11 @@ while True:
         for url in every_main_urls:
             get_data(url, s_date)
 
-print u'处理详情页 _@_ ' + str(datetime.datetime.now())
-need_urls = get_detail_pages()
-for url in need_urls:
-    get_info(url)
+    #>>>>>>>>>>>>>>>>>>可以单独运行的部分 start  >>>>>>>>>>>
+    print u'处理详情页 _@_ ' + str(datetime.datetime.now())
+    need_urls = get_detail_pages()
+    # for url in need_urls:
+    #     get_info(url)
     start_no = 0
     thread_num=10
 
@@ -38,7 +39,7 @@ for url in need_urls:
             t.start()
         t.join()
         start_no += thread_num
-
+    # >>>>>>>>>>>>>>>>>>可以单独运行的部分 end  >>>>>>>>>>>
 
     timeArray = time.strptime(str(s_date), "%Y%m%d")
     timestamp = time.mktime(timeArray)
