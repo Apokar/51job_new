@@ -119,73 +119,70 @@ def get_data(detail_main_url, s_date):
                         html = content[i].encode('latin1').decode('gbk')
 
                         job_url = re_findall('class="t1 .*?">.*?<a href="(.*?)"', html)[0]
-                        job_name = re_findall('.*?target="_blank" title="(.*?)">', html)[0]
-                        company_url = re_findall('.*?class="t2"><a href="(.*?)"', html)[0]
-                        company_name = re_findall('<span class="t2".*?target="_blank" title="(.*?)"', html)[0]
-                        salary = re_findall('.*?class="t3">(.*?)</span>', html)[0]
-                        lcation = re_findall('.*?"t4">(.*?)</span>', html)[0]
+                        # job_name = re_findall('.*?target="_blank" title="(.*?)">', html)[0]
+                        # company_url = re_findall('.*?class="t2"><a href="(.*?)"', html)[0]
+                        # company_name = re_findall('<span class="t2".*?target="_blank" title="(.*?)"', html)[0]
+                        # salary = re_findall('.*?class="t3">(.*?)</span>', html)[0]
+                        # lcation = re_findall('.*?"t4">(.*?)</span>', html)[0]
                         pub_date = re_findall('.*?"t5">(.*?)</span>', html)[0]
 
-                        # print job_url
-                        # print job_name
-                        # print company_url
-                        # print company_name
-                        # print salary
-                        # print lcation
-                        # print pub_date
+                        if job_url.find('jobs.51job')>=0:
+                            print 'job_url 符合规则'
 
-                        pub_time = str(s_date)[:4] + pub_date.replace('-', '')
-                        print u'发布时间 : ' + pub_time
+                            pub_time = str(s_date)[:4] + pub_date.replace('-', '')
+                            print u'发布时间 : ' + pub_time
 
-                        ptime = pub_time.encode('utf-8')
-                        timestamp = get_timestamp(ptime)
+                            ptime = pub_time.encode('utf-8')
+                            timestamp = get_timestamp(ptime)
 
-                        start_timestamp = get_timestamp(s_date)
+                            start_timestamp = get_timestamp(s_date)
 
-                        end_timestamp = start_timestamp + int(345600)
+                            end_timestamp = start_timestamp + int(345600)
 
-                        # cursor = conn.cursor()
-                        # cursor.execute('select job_url from 51job_career_list_copy')
-                        # old = cursor.fetchall()
-                        # for y in range(0, len(old)):
-                        #     old_urls.append(old[y][0])
 
-                        # print u'检测数据是否已插入'
-                        # if job_url in old_urls:
-                        #     print job_url + u'  已插入,跳过'
-                        #     pass
-                        # else:
-                        print job_url + u'  检测时间是否符合要求'
-                        if start_timestamp <= timestamp < end_timestamp:
-                            print job_url + u'  时间符合要求 '
+                            print job_url + u'  检测时间是否符合要求'
+                            if start_timestamp <= timestamp < end_timestamp:
+                                print job_url + u'  时间符合要求 '
 
-                            cursor.execute(
-                                'insert into 51job_career_list_copy values ("%s","%s","%s","%s","%s","%s","%s","%s","%s")' %
-                                (
-                                    job_url
-                                    , job_name
-                                    , company_url
-                                    , company_name
-                                    , salary
-                                    , lcation
-                                    , pub_date
-                                    , str(datetime.datetime.now())
-                                    , str(datetime.datetime.now())[:10]
-                                )
-                            )
-                            conn.commit()
-                            print u'插入成功  ' + str(datetime.datetime.now())
+                                cursor.execute('replace into 51job_single_url set job_url="%s",datestamp="%s"' %
+                                               (
+                                                   job_url,
+
+                                                   str(datetime.datetime.now())[:10]
+
+                                               ))
+                                conn.commit()
+
+                                # cursor.execute(
+                                #     'insert into 51job_career_list_copy values ("%s","%s","%s","%s","%s","%s","%s","%s","%s")' %
+                                #     (
+                                #         job_url
+                                #         # , job_name
+                                #         # , company_url
+                                #         # , company_name
+                                #         # , salary
+                                #         # , lcation
+                                #         # , pub_date
+                                #         # , str(datetime.datetime.now())
+                                #         , str(datetime.datetime.now())[:10]
+                                #     )
+                                # )
+                                # conn.commit()
+                                print u'插入成功  ' + str(datetime.datetime.now())
+                            else:
+                                # cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
+                                #     job_url, e, '时间不符合要求', str(datetime.datetime.now())))
+                                # conn.commit()
+                                if start_timestamp > timestamp:
+                                    print job_url + u'  时间不符合要求 '
+                                    flag=0
+                                    break
+                                # 上面的flag 就是指 在检测到时间不符的数据时 接下来的数据都是不符的 所以跳出for循环 开始下一个页面
+
+                            break
                         else:
-                            cursor.execute('insert into 51job_error_log values("%s","%s","%s","%s")' % (
-                                job_url, e, '时间不符合要求', str(datetime.datetime.now())))
-                            conn.commit()
-                            if start_timestamp > timestamp:
-                                print job_url + u'  时间不符合要求 '
-                                flag=0
-                                break
-                            # 上面的flag 就是指 在检测到时间不符的数据时 接下来的数据都是不符的 所以跳出for循环 开始下一个页面
-
-                        break
+                            print ' 不符合规则的job_url  ' + str(job_url)
+                            break
                     except Exception, e:
                         print str(e)
                         if str(e).find('2006') >= 0:

@@ -11,6 +11,8 @@ from Job51_detail import *
 from Job51_list import *
 
 s_date = input('Start from (input like this : YYYYMMDD):')
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++
 while True:
     print u'处理列表页 _@_ ' + str(datetime.datetime.now())
     main_urls = get_main_urls()
@@ -19,15 +21,16 @@ while True:
         for url in every_main_urls:
             get_data(url, s_date)
 
-    #>>>>>>>>>>>>>>>>>>可以单独运行的部分 start  >>>>>>>>>>>
+#     #>>>>>>>>>>>>>>>>>>可以单独运行的部分 start  >>>>>>>>>>>
     print u'处理详情页 _@_ ' + str(datetime.datetime.now())
-    need_urls = get_detail_pages()
-    # for url in need_urls:
-    #     get_info(url)
+    need_urls = get_detail_pages(s_date)
+
     start_no = 0
     thread_num=10
 
     end_no = len(need_urls)
+    print end_no
+    time.sleep(5)
 
     while start_no < (end_no - thread_num + 1):
         threads = []
